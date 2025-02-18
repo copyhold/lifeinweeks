@@ -1,19 +1,13 @@
-import { useState } from 'react'
-import { createEffect } from 'solid-js';
-import {allWeeks, name} from './services/state';
-import {Week} from './components/Week';
+import React from 'react';
+import {name} from './services/state';
+import {Weeks} from './components/Weeks';
 
-const life_length = 100;
 function App() {
   
   return (
   <main>
     <header>{name()}</header>
-    <section>
-      {allWeeks().map((week) => (
-        <Week week={week} key={week.start.getTime()} />
-      ))}
-    </section>
+    <Weeks />
   </main>
   )
 }
