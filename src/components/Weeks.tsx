@@ -9,17 +9,20 @@ const StyledWeeks = styled.section`
   flex-wrap: wrap;
   gap: 4px;
   justify-content: flex-start;
+  padding: 1rem;
+  background: #fff;
+  border-radius: .5rem;
 `;
 export const Weeks: React.FC = () => {
   return (
     <StyledWeeks>
       {allWeeks().map((week) => (
-        <>
+        <React.Fragment key={week.start.getTime()}>
         {
           isFirstWeekOfDecade(week) && <DecatesSeparator week={week} />
         }
-        <Week week={week} key={week.start.getTime()} />
-        </>
+        <Week week={week} />
+        </React.Fragment>
       ))}
     </StyledWeeks>
   )

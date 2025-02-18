@@ -4,7 +4,7 @@ import { yearsSinceBirth } from '../services/state';
 
 const StyledSection = styled.section`
   flex-basis: 100%;
-  margin-block: 1lh;
+  margin-bottom: 1lh;
   h3 {
     font-size: 1.3em;
   }

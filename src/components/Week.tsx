@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, {css} from 'styled-components';
-import { isCurrentWeek } from '../services/state';
+import { isCurrentWeek, yearsSinceBirth } from '../services/state';
 
 const StyledWeek = styled.div<{isCurrent: boolean}>`
   border-radius: 2px;
@@ -14,7 +14,7 @@ const StyledWeek = styled.div<{isCurrent: boolean}>`
 `;
 export const Week: React.FC<{week: TWeekOfTheYear }> = ({week}) => {
   return (
-        <StyledWeek isCurrent={isCurrentWeek(week)}>
+        <StyledWeek title={week.start} isCurrent={isCurrentWeek(week)}>
           {
             week.notes && <p>{week.notes[0].note}</p>
           }

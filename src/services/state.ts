@@ -26,7 +26,7 @@ export const allWeeks = createMemo(() => {
 });
 
 export const yearsSinceBirth = (date: Date) => {
-  const years = date.getFullYear() - birthday().getFullYear();
+  const years = Math.floor((date.getTime() - birthday().getTime()) / 1000 / 60 / 60 / 24 / 365.25);
   return years;
 }
 
