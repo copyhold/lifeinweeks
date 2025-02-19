@@ -1,12 +1,14 @@
 import {createSignal, createMemo} from 'solid-js';
-import {TWeek} from '../types';
+import {TWeek, TEvent} from '../types';
 
 const life_length = 100;
 export const weekInMs = 7 * 24 * 60 * 60 * 1000;
 export const [birthday, setBirthday] = createSignal<Date>(new Date('1990-01-01'));
 export const [name, setName] = createSignal<string>('Ilya');
-export const [weeks, setWeeks] = createSignal<TWeek[]>([]);
-export const findWeekIndex = (start: Date) => weeks().findIndex((week) => week.start > start && week.start.getTime() + weekInMs < start.getTime());
+export const [events, setEvents] = createSignal<TEvent[]>([]);
+export const [editWeek, setEditWeek] = createSignal<TWeek | null>(null);
+
+export const findWeekIndex = (start: Date) => events().findIndex((week) => week.start > start && week.start.getTime() + weekInMs < start.getTime());
 export const allWeeks = createMemo(() => {
   const start = new Date(birthday());
   const endOfLife = new Date(start).setFullYear(start.getFullYear() + life_length);
@@ -18,7 +20,7 @@ export const allWeeks = createMemo(() => {
     weeksOfTheYear.push({
       start: new Date(start),
       end,
-      notes: weekIndex > -1 && weeks()[weekIndex],
+      notes: weekIndex > -1 && events()[weekIndex],
     })
     start.setDate(start.getDate() + 7);
   }

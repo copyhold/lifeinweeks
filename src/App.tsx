@@ -1,8 +1,9 @@
 import React from 'react';
-import {createEffect} from 'solid-js';
+import {createEffect, onMount} from 'solid-js';
 import styled from 'styled-components';
-import {name, birthday, weeks} from './services/state';
+import {name, editWeek} from './services/state';
 import {Weeks} from './components/Weeks';
+import { EditWeek } from './components/EditWeek';
 import { persist, init } from './services/urlstorage.service';
 
 const StyledApp = styled.main`
@@ -20,14 +21,18 @@ const StyledApp = styled.main`
   }
 `;
 function App() {
-  createEffect(() => {
+  onMount(() => {
+    console.log('%c [  ]-26', 'font-size:13px; background:pink; color:#bf2c9f;', 'calling init')
     init();
-  }, []); 
+  }); 
   createEffect(() => {
+    console.log('%c [  ]-29', 'font-size:13px; background:pink; color:#bf2c9f;', 'persist call')
     persist();
-  }, [name, birthday, weeks]);
+  });
   return (
   <StyledApp>
+    {editWeek()}
+    <EditWeek />
     <header>{name()}</header>
     <Weeks />
   </StyledApp>
