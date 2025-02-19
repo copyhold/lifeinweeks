@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {Week} from './Week';
 import {DecatesSeparator} from './DecatesSeparator';
-import { allWeeks, isFirstWeekOfDecade } from '../services/state';
+import { useStore } from '../services/state.zus';
 
 const StyledWeeks = styled.section`
   display: flex;
@@ -14,6 +14,8 @@ const StyledWeeks = styled.section`
   border-radius: .5rem;
 `;
 export const Weeks: React.FC = () => {
+  const allWeeks = useStore((state) => state.allWeeks);
+  const isFirstWeekOfDecade = useStore((state) => state.isFirstWeekOfDecade);
   return (
     <StyledWeeks>
       {allWeeks().map((week) => (

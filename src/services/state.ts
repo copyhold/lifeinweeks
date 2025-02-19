@@ -11,8 +11,9 @@ export const [editWeek, setEditWeek] = createSignal<TWeek | null>(null);
 export const findWeekIndex = (start: Date) => events().findIndex((week) => week.start > start && week.start.getTime() + weekInMs < start.getTime());
 export const allWeeks = createMemo(() => {
   const start = new Date(birthday());
-  const endOfLife = new Date(start).setFullYear(start.getFullYear() + life_length);
-  const weeksOfTheYear = [];
+  const endOfLife = new Date(start)
+  endOfLife.setFullYear(start.getFullYear() + life_length);
+  const weeksOfTheYear: WeekOfTheYear[] = [];
   while (start < endOfLife) {
     const end = new Date(start);
     end.setDate(start.getDate() + 7);
@@ -20,7 +21,7 @@ export const allWeeks = createMemo(() => {
     weeksOfTheYear.push({
       start: new Date(start),
       end,
-      notes: weekIndex > -1 && events()[weekIndex],
+      events: weekIndex > -1 && events()[weekIndex],
     })
     start.setDate(start.getDate() + 7);
   }
@@ -43,3 +44,18 @@ export const isCurrentWeek = (week: TWeek) => {
   const now = new Date();
   return week.start < now && week.end > now;
 }
+
+export const setWeek = (updatedWeek: TWeek) => {
+  const weekIndex = findWeekIndex(updatedWeek.start);
+  const currentEvents = events();
+  
+  if (weekIndex > -1) {
+    // Update existing week
+    const newEvents = [...currentEvents];
+    newEvents[weekIndex] = updatedWeek;
+    setEvents(newEvents);
+  } else {
+    // Add new week
+    setEvents([...currentEvents, updatedWeek]);
+  }
+};

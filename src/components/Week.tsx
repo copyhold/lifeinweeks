@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, {css} from 'styled-components';
-import { isCurrentWeek, setEditWeek } from '../services/state';
+import { useStore, useEditWeekStore } from '../services/state.zus';
 
 const StyledWeek = styled.button<{$isCurrent: boolean}>`
   padding: 0;
@@ -14,10 +14,13 @@ const StyledWeek = styled.button<{$isCurrent: boolean}>`
   `
   }
 `;
-export const Week: React.FC<{week: TWeekOfTheYear }> = ({week}) => {
+export const Week: React.FC<{week: WeekOfTheYear }> = ({week}) => {
+  const setEditWeek = useEditWeekStore((state) => state.setEditWeek);
+  const isCurrentWeek = useStore((state) => state.isCurrentWeek);
   const handleSelectWeek = () => {
     setEditWeek(week);
   }
+
   return (
         <StyledWeek onClick={handleSelectWeek} title={week.start.format('yyyy/mm/dd')} $isCurrent={isCurrentWeek(week)}>
           {
