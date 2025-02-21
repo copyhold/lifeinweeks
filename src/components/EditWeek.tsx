@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import { useStore, useEditWeekStore } from '../services/state.zus';
+import { appStore, editWeekStore } from '../services/state.zus';
 
 const StyledEditWeek = styled.dialog`
 textarea {
@@ -11,11 +11,11 @@ textarea {
 }
 `;
 export const EditWeek: React.FC = ()=> {
-  const {setWeek} = useStore();
-  const {editWeek, setEditWeek} = useEditWeekStore();
+  const {setWeek} = appStore();
+  const {editWeek, setEditWeek} = editWeekStore();
   const [note, setNote] = React.useState('');
   const handleUpdate = () => {
-    setWeek({...editWeek, notes: [{note}]});
+    setWeek({...editWeek, note});
     setEditWeek(null);
   }
   useEffect(() => {

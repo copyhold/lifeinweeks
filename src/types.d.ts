@@ -5,7 +5,7 @@ type TWeek = {
 type TEvent = {
   start: Date;
   end?: Date;
-  note?: string;
+  note: string;
 }
 type WeekOfTheYear = {
   start: Date;

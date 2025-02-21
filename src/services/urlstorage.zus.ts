@@ -1,5 +1,4 @@
-import { create } from 'zustand'
-import { persist, StateStorage, createJSONStorage } from 'zustand/middleware'
+import { StateStorage, createJSONStorage } from 'zustand/middleware'
 
 const dateFormat = 'yyyymmdd';
 const persistentStorage: StateStorage = {
