@@ -1,5 +1,6 @@
 type TWeek = {
   start: Date;
+  end: Date;
   note?: string;
 }
 type TEvent = {

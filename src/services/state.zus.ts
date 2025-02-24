@@ -37,9 +37,11 @@ const stateCreatorFn = (set, get) => ({
   setEvents: (events) => {
     set({ events })
   },
-  findWeekIndex: (start) => {
+  findWeekIndex: (start: Date) => {
     const {events} = get();
-    return events.findIndex((week) => week.start <= start && week.end >= start);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 7);
+    return events.findIndex((event: TEvent) => event.start >= start && event.end <= end);
   },
   yearsSinceBirth: (date) => {
     const birthday = get().birthday;
