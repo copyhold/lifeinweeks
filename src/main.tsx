@@ -1,8 +1,8 @@
 import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import './utils/date';
 import App from './App.tsx'
 import {createGlobalStyle} from 'styled-components';
-import './utils/date';
 
 const GlobalStyles = createGlobalStyle`
 html {

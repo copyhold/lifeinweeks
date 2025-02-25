@@ -1,6 +1,6 @@
-import {create} from 'zustand';
-import { persist } from 'zustand/middleware'
-import { urlStorageOptions } from './urlstorage.zus';
+import {createStore, create} from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware'
+import { urlStorageOptions, persistentStorage } from './urlstorage.zus';
 import { TWeek, TEvent } from '../types';
 
 export const life_length = 1;
@@ -32,11 +32,9 @@ const stateCreatorFn = (set, get) => ({
   birthday: new Date('1972-08-07'),
   name: 'Ilya',
   events: [],
-  setBirthday: (date) => set({ birthday: date }),
+  setBirthday: (birthday) => set({ birthday }),
   setName: (name) => set({ name }),
-  setEvents: (events) => {
-    set({ events })
-  },
+  setEvents: (events) => set({ events }),
   findWeekIndex: (start: Date) => {
     const {events} = get();
     const end = new Date(start);
@@ -45,7 +43,7 @@ const stateCreatorFn = (set, get) => ({
   },
   yearsSinceBirth: (date) => {
     const birthday = get().birthday;
-    const years = Math.floor((date.getTime() - birthday.getTime()) / 1000 / 60 / 60 / 24 / 365.25);
+    const years = Math.floor((date.getTime() - new Date(birthday).getTime()) / 1000 / 60 / 60 / 24 / 365.25);
     return years;
   },
   isFirstWeekOfDecade: (week) => {
@@ -72,4 +70,9 @@ const stateCreatorFn = (set, get) => ({
     }
   },
 });
-export const appStore = create<State>(persist(stateCreatorFn, urlStorageOptions));
+
+const getUrlSearch = () => {
+  return window.location.search.slice(1)
+}
+
+export const appStore = create<State>(persist<State>(stateCreatorFn, urlStorageOptions));

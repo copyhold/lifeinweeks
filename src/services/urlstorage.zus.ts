@@ -1,29 +1,33 @@
 import { StateStorage, createJSONStorage } from 'zustand/middleware'
 
 const dateFormat = 'yyyymmdd';
-const persistentStorage: StateStorage = {
+export const persistentStorage: StateStorage = {
   getItem: (key): string => {
     const searchParams = new URLSearchParams(window.location.search)
-    const storedValue = searchParams.get(key) ?? '';
-    const newValue = JSON.parse(storedValue)
-    newValue.state.birthday = newValue.state.birthday.parseDate(dateFormat);
-    newValue.state.events = newValue.state.events.map(event => {
-      event.start = event.start.parseDate(dateFormat)
-      event.end = event.end.parseDate(dateFormat)
-      return event;
-    })
-    return newValue;
+    const storedValue = searchParams.get(key);
+    let newValue = JSON.parse(storedValue as string);
+    if (typeof newValue === 'string') newValue = JSON.parse(newValue);
+    try {
+      newValue.state.birthday = newValue.state.birthday.parseDate(dateFormat);
+      newValue.state.events.forEach(event => {
+        event.start = event.start.parseDate(dateFormat)
+        event.end = event.end.parseDate(dateFormat)
+      })
+      return JSON.stringify(newValue);
+    } catch (e) {
+      console.log(e, newValue);
+    }
   },
-  setItem: (key, newValue): void => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const parsedValue = JSON.parse(newValue);
-    parsedValue.state.birthday = new Date(parsedValue.state.birthday).format(dateFormat);
-    parsedValue.state.events = parsedValue.state.events.map((event) => {
+  setItem: (key: string, value: string): void => {
+    const newValue = JSON.parse(value);
+    newValue.state.birthday = new Date(newValue.state.birthday).format(dateFormat);
+    newValue.state.events = newValue.state.events.map((event) => {
       event.start = new Date(event.start).format(dateFormat);
       event.end = new Date(event.end).format(dateFormat);
       return event;
     });
-    searchParams.set(key, JSON.stringify(parsedValue))
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set(key, JSON.stringify(value))
     window.history.replaceState(null, '', `?${searchParams.toString()}`)
   },
   removeItem: (key): void => {
