@@ -18,6 +18,7 @@ interface State {
   isFirstWeekOfDecade: (week: TWeek) => boolean;
   isCurrentWeek: (week: TWeek) => boolean;
   setWeek: (updatedWeek: TWeek) => void;
+  allWeeks: () => TWeek[];
 }
 
 export const useEditWeekStore = create<{
@@ -41,6 +42,12 @@ const stateCreatorFn = (set, get) => ({
     end.setDate(start.getDate() + 7);
     return events.findIndex((event: TEvent) => start <= new Date(event.start) && end > new Date(event.start));
   },
+  getEventsForWeek: (start: Date) => {
+    const {events} = get();
+    const end = new Date(start);
+    end.setDate(start.getDate() + 7);
+    return events.filter((event: TEvent) => start <= new Date(event.start) && end > new Date(event.start));
+  },
   yearsSinceBirth: (date) => {
     const birthday = get().birthday;
     const years = Math.floor((date.getTime() - new Date(birthday).getTime()) / 1000 / 60 / 60 / 24 / 365.25);
@@ -60,6 +67,25 @@ const stateCreatorFn = (set, get) => ({
     const { events, setEvents } = get();
     setEvents([...events, event]);
   },
+  allWeeks: () => {
+    const { birthday, getEventsForWeek } = get();
+    const weeksOfTheYear: WeekOfTheYear[] = [];
+    const start = new Date(birthday);
+    const endOfLife = new Date(start);
+    endOfLife.setFullYear(start.getFullYear() + life_length);
+    while (start < endOfLife) {
+      const end = new Date(start);
+      end.setDate(start.getDate() + 7);
+      const events = getEventsForWeek(start);
+      weeksOfTheYear.push({
+        start: new Date(start),
+        end,
+        events,
+      });
+      start.setDate(start.getDate() + 7);
+    }
+    return weeksOfTheYear;
+  }
 });
 
 const getUrlSearch = () => {
