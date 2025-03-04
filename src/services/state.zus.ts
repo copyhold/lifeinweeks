@@ -17,7 +17,7 @@ interface State {
   yearsSinceBirth: (date: Date) => number;
   isFirstWeekOfDecade: (week: TWeek) => boolean;
   isCurrentWeek: (week: TWeek) => boolean;
-  setWeek: (updatedWeek: TWeek) => void;
+  setEvent: (updatedWeek: TEvent) => void;
   allWeeks: () => TWeek[];
 }
 

@@ -36,7 +36,8 @@ export const Week: React.FC<{week: WeekOfTheYear }> = ({week}) => {
   const isCurrentlyEdited = useMemo(() => {
     return editWeek?.start.getTime() === week.start.getTime();
   }, [editWeek, week]);
-  const handleSelectWeek = ({target}) => {
+  const handleSelectWeek = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const {target} = event;
     setEditWeek(week);
     const weekCell = target.closest('button');
     const {x,y} = weekCell.getBoundingClientRect();
