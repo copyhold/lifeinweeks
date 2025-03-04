@@ -1,9 +1,9 @@
 import React from 'react';
-import {appStore} from '../services/state.zus';
+import {useAppStore} from '../services/state.zus';
 
 
 export const Header: React.FC = () => {
-  const {name, setName} = appStore();
+  const {name, setName} = useAppStore();
   const [editing, setEditing] = React.useState(false);
   const [newName, setNewName] = React.useState(name);
   return (

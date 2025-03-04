@@ -1,9 +1,9 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import { useStore } from 'zustand';
 import styled from 'styled-components';
 import {Week} from './Week';
 import {DecatesSeparator} from './DecatesSeparator';
-import { appStore, life_length } from '../services/state.zus';
+import { useAppStore, life_length } from '../services/state.zus';
 
 const StyledWeeks = styled.section`
   display: flex;
@@ -15,8 +15,10 @@ const StyledWeeks = styled.section`
   border-radius: .5rem;
 `;
 export const Weeks: React.FC = () => {
-  const { birthday, events, findWeekIndex, isFirstWeekOfDecade } = appStore();
+  const { findWeekIndex, birthday, events, isFirstWeekOfDecade } = useAppStore();
+
   const allWeeks = useMemo(() => {
+  console.log('%c [ events ]-19', 'font-size:13px; background:pink; color:#bf2c9f;', events)
     const weeksOfTheYear: WeekOfTheYear[] = [];
     const start = new Date(birthday);
     const endOfLife = new Date(start);
@@ -34,6 +36,7 @@ export const Weeks: React.FC = () => {
     }
     return weeksOfTheYear;
   }, [birthday, events,findWeekIndex])
+
   return (
     <StyledWeeks>
       {allWeeks.map((week) => (

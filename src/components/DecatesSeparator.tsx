@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { appStore } from '../services/state.zus';
+import { useAppStore } from '../services/state.zus';
 
 const StyledSection = styled.section`
   flex-basis: 100%;
@@ -11,7 +11,7 @@ const StyledSection = styled.section`
 `;
 
 export const DecatesSeparator: React.FC<{week: TWeekOfTheYear}> = ({week}) => {
-  const {yearsSinceBirth} = appStore();
+  const {yearsSinceBirth} = useAppStore();
   const years = yearsSinceBirth(week.start);
   const title = years > 0 ? `${years} years passed` : 'Your first year';
   return (

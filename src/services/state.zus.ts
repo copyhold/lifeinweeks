@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 import { urlStorageOptions, persistentStorage } from './urlstorage.zus';
 import { TWeek, TEvent } from '../types';
 
-export const life_length = 1;
+export const life_length = 100;
 export const weekInMs = 7 * 24 * 60 * 60 * 1000;
 
 interface State {
@@ -20,7 +20,7 @@ interface State {
   setWeek: (updatedWeek: TWeek) => void;
 }
 
-export const editWeekStore = create<{
+export const useEditWeekStore = create<{
   editWeek: TWeek | null;
   setEditWeek: (week: TWeek | null) => void;
 }>((set, get) => ({
@@ -39,7 +39,7 @@ const stateCreatorFn = (set, get) => ({
     const {events} = get();
     const end = new Date(start);
     end.setDate(start.getDate() + 7);
-    return events.findIndex((event: TEvent) => event.start >= start && event.end <= end);
+    return events.findIndex((event: TEvent) => start <= new Date(event.start) && end > new Date(event.start));
   },
   yearsSinceBirth: (date) => {
     const birthday = get().birthday;
@@ -56,18 +56,9 @@ const stateCreatorFn = (set, get) => ({
     const now = new Date();
     return week.start < now && week.end > now;
   },
-  setWeek: (updatedWeek) => {
-    const { findWeekIndex, events, setEvents } = get();
-    const weekIndex = findWeekIndex(updatedWeek.start);
-    const currentEvents = events;
-    
-    if (weekIndex > -1) {
-      const newEvents = [...currentEvents];
-      newEvents[weekIndex] = updatedWeek;
-      setEvents(newEvents);
-    } else {
-      setEvents([...currentEvents, updatedWeek]);
-    }
+  setEvent: (event) => {
+    const { events, setEvents } = get();
+    setEvents([...events, event]);
   },
 });
 
@@ -75,4 +66,4 @@ const getUrlSearch = () => {
   return window.location.search.slice(1)
 }
 
-export const appStore = create<State>(persist<State>(stateCreatorFn, urlStorageOptions));
+export const useAppStore = create<State>(persist<State>(stateCreatorFn, urlStorageOptions));
