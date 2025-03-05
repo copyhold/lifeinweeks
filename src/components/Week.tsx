@@ -32,11 +32,16 @@ const Events: React.FC<{events: TEvent[]}> = ({events}) => {
 }
 export const Week: React.FC<{week: WeekOfTheYear }> = ({week}) => {
   const {editWeek, setEditWeek} = useEditWeekStore();
-  const {isCurrentWeek} = useAppStore();
+  const {isCurrentWeek, cleanWeek} = useAppStore();
   const isCurrentlyEdited = useMemo(() => {
     return editWeek?.start.getTime() === week.start.getTime();
   }, [editWeek, week]);
   const handleSelectWeek = (event: React.MouseEvent<HTMLButtonElement>) => {
+      console.log('%c [ event ]-41', 'font-size:13px; background:pink; color:#bf2c9f;', event)
+    if (event.metaKey) {
+      cleanWeek(week);
+      return;
+    }
     const {target} = event;
     setEditWeek(week);
     const weekCell = target.closest('button');

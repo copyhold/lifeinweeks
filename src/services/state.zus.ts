@@ -19,6 +19,7 @@ interface State {
   isCurrentWeek: (week: TWeek) => boolean;
   setEvent: (updatedWeek: TEvent) => void;
   allWeeks: () => TWeek[];
+  cleanWeek: (week: TWeek) => void;
 }
 
 export const useEditWeekStore = create<{
@@ -47,6 +48,12 @@ const stateCreatorFn = (set, get) => ({
     const end = new Date(start);
     end.setDate(start.getDate() + 7);
     return events.filter((event: TEvent) => start <= new Date(event.start) && end > new Date(event.start));
+  },
+  getEventsOffWeek: (start: Date) => {
+    const {events} = get();
+    const end = new Date(start);
+    end.setDate(start.getDate() + 7);
+    return events.filter((event: TEvent) => !(start <= new Date(event.start) && end > new Date(event.start)));
   },
   yearsSinceBirth: (date) => {
     const birthday = get().birthday;
@@ -85,6 +92,10 @@ const stateCreatorFn = (set, get) => ({
       start.setDate(start.getDate() + 7);
     }
     return weeksOfTheYear;
+  },
+  cleanWeek: week => {
+    const {setEvents, getEventsOffWeek} = get();
+    setEvents(getEventsOffWeek(week.start)); 
   }
 });
 
