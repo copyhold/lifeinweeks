@@ -10,8 +10,9 @@ html {
   font-family: sans-serif;
   }
  body {
- font-size: 100%;
- line-height: 1.3;
+  font-size: 100%;
+  line-height: 1.3;
+  margin: 0;
  } 
 `;
 

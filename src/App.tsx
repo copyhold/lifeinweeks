@@ -17,6 +17,9 @@ const StyledApp = styled.main`
     border-radius: .5rem;
     padding: 1rem;
   }
+  @media (max-width: 599px) {
+    padding: 5px;
+  }
 `;
 function App() {
   return (

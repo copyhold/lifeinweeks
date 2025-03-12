@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build --base=/lifeinweeks/",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "jest"
   },
   "dependencies": {
     "@preact/signals-react": "^3.0.1",
@@ -17,7 +18,12 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "@eslint/js": "^9.20.0",
+    "ts-jest": "^29.1.1",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/user-event": "^14.5.1",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react-swc": "^3.5.0",

@@ -2,18 +2,26 @@ import React, {useMemo} from 'react'
 import styled, {css} from 'styled-components';
 import { useAppStore, useEditWeekStore } from '../services/state.zus';
 
-const StyledWeek = styled.button<{$isCurrent: boolean, $isEditing: boolean}>`
+type WeekStatus = 'current' | 'past' | 'future' 
+const StyledWeek = styled.label<{$weekStatus: WeekStatus, $isEditing: boolean}>`
   padding: 0;
   background-color: #fff;
   border-radius: 2px;
   border: 1px solid #ccc;
   height: 1.2lh;
+  line-height: 1.0;
+  display: flex;
+  align-items: center;
   flex-basis: 1.2lh;
   ${(props) => props.$isEditing && css`
     background-color: lightblue;  
   `
   }
-  ${(props) => props.$isCurrent && css`
+  ${(props) => props.$weekStatus === 'future' && css`
+    background-color: lightgray;  
+  `
+  }
+  ${(props) => props.$weekStatus === 'current' && css`
     background-color: yellow;  
   `
   }
@@ -23,7 +31,15 @@ const StyledWeek = styled.button<{$isCurrent: boolean, $isEditing: boolean}>`
   font-size: 0.8rem;
   white-space: nowrap;
   }
+  @media (max-width: 599px) {
+    height: 1.5lh;
+    flex-basis: 1.5lh;
+  }
 `;
+const isBeforeCurrentWeek = (week: WeekOfTheYear) => {
+  const now = new Date();
+  return week.start < now;
+}
 const Events: React.FC<{events: TEvent[]}> = ({events}) => {
   const note = events.map(event => event.note).filter(Boolean).join(', ');
   return (
@@ -32,26 +48,26 @@ const Events: React.FC<{events: TEvent[]}> = ({events}) => {
 }
 export const Week: React.FC<{week: WeekOfTheYear }> = ({week}) => {
   const {editWeek, setEditWeek} = useEditWeekStore();
-  const {isCurrentWeek, cleanWeek} = useAppStore();
+  const {isCurrentWeek, cleanWeek, birthday} = useAppStore();
   const isCurrentlyEdited = useMemo(() => {
     return editWeek?.start.getTime() === week.start.getTime();
   }, [editWeek, week]);
-  const handleSelectWeek = (event: React.MouseEvent<HTMLButtonElement>) => {
-      console.log('%c [ event ]-41', 'font-size:13px; background:pink; color:#bf2c9f;', event)
+  const handleSelectWeek = (event: React.MouseEvent<HTMLLabelElement>) => {
     if (event.metaKey) {
       cleanWeek(week);
       return;
     }
     const {target} = event;
     setEditWeek(week);
-    const weekCell = target.closest('button');
-    const {x,y} = weekCell.getBoundingClientRect();
-    document.body.style.setProperty('--editing-week-x', `${x}px`);
-    document.body.style.setProperty('--editing-week-y', `${y}px`);
+    const weekCell = target.closest('label');
+    document.body.style.setProperty('--editing-week-x', `${weekCell.offsetLeft}px`);
+    document.body.style.setProperty('--editing-week-y', `${weekCell.offsetTop}px`);
   }
 
+  const weekStatus = isCurrentWeek(week) ? 'current' : isBeforeCurrentWeek(week) ? 'past' : 'future';
+
   return (
-        <StyledWeek $isEditing={isCurrentlyEdited} onClick={handleSelectWeek} title={week.start.format('yyyy/mm/dd')} $isCurrent={isCurrentWeek(week)}>
+        <StyledWeek $weekStatus={weekStatus} $isEditing={isCurrentlyEdited} onClick={handleSelectWeek} title={week.start.format('yyyy/mm/dd')}>
           {
             week.events && <Events events={week.events} />
           }
