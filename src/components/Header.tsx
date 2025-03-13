@@ -1,8 +1,14 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {useAppStore} from '../services/state.zus';
+import {colors} from '../theme';
 
 const StyledHeader = styled.header`
+  background-color: ${colors.background};
+  font-size: 1.5em;
+  text-align: center;
+  border-radius: .5rem;
+  padding: 1rem;
   display: flex;
   gap: 1em;
   justify-content: space-between;

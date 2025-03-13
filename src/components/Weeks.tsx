@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {Week} from './Week';
 import {DecatesSeparator} from './DecatesSeparator';
 import { useAppStore, life_length } from '../services/state.zus';
+import { colors } from '../theme';
 
 const StyledWeeks = styled.section`
   display: flex;
@@ -11,7 +12,7 @@ const StyledWeeks = styled.section`
   gap: 4px;
   justify-content: flex-start;
   padding: 1rem;
-  background: #fff;
+  background: ${colors.background};
   border-radius: .5rem;
 `;
 export const Weeks: React.FC = () => {

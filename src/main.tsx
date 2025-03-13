@@ -6,6 +6,7 @@ import {createGlobalStyle} from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
 html {
+  color-scheme: light dark;
   font-size: 16px;
   font-family: sans-serif;
   }

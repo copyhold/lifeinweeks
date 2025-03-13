@@ -1,28 +1,30 @@
 import React, {useMemo} from 'react'
 import styled, {css} from 'styled-components';
 import { useAppStore, useEditWeekStore } from '../services/state.zus';
+import { colors } from '../theme';
 
 type WeekStatus = 'current' | 'past' | 'future' 
 const StyledWeek = styled.label<{$weekStatus: WeekStatus, $isEditing: boolean}>`
   padding: 0;
-  background-color: #fff;
+  background-color: color(from ${colors.background} xyz calc(x + 0.1) calc(y + 0.1) calc(z + 0.1));
   border-radius: 2px;
-  border: 1px solid #ccc;
+  border: 1px solid ${colors.border};
   height: 1.2lh;
   line-height: 1.0;
   display: flex;
   align-items: center;
   flex-basis: 1.2lh;
   ${(props) => props.$isEditing && css`
-    background-color: lightblue;  
+    background-color: ${colors.current};
   `
   }
   ${(props) => props.$weekStatus === 'future' && css`
-    background-color: lightgray;  
+    background-color: ${colors.empathize};
+    border-color: ${colors.empathize};
   `
   }
   ${(props) => props.$weekStatus === 'current' && css`
-    background-color: yellow;  
+    background-color: light-dark(lightgreen, lightcoral);  
   `
   }
   p {

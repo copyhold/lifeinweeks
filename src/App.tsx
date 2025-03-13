@@ -3,20 +3,14 @@ import styled from 'styled-components';
 import { Weeks } from './components/Weeks';
 import { EditWeek } from './components/EditWeek';
 import { Header } from './components/Header';
+import { colors } from './theme';
 
 const StyledApp = styled.main`
   display: flex;
   flex-direction: column;
   gap: 1lh;
   padding: 1lh;
-  background-color: #f0f0f3;
-  header {
-    background-color: #fff;
-    font-size: 1.5em;
-    text-align: center;
-    border-radius: .5rem;
-    padding: 1rem;
-  }
+  background-color: ${colors.body};
   @media (max-width: 599px) {
     padding: 5px;
   }
