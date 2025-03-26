@@ -34,9 +34,9 @@ const stateCreatorFn = (set, get) => ({
   birthday: new Date('1972-08-07'),
   name: 'Ilya',
   events: [],
-  setBirthday: (birthday) => set({ birthday }),
-  setName: (name) => set({ name }),
-  setEvents: (events) => set({ events }),
+  setBirthday: (birthday: Date) => set({ birthday }),
+  setName: (name: string) => set({ name }),
+  setEvents: (events: TEvent[]) => set({ events }),
   findWeekIndex: (start: Date) => {
     const {events} = get();
     const end = new Date(start);

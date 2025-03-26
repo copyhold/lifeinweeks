@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {useAppStore} from '../services/state.zus';
 import {colors} from '../theme';
+import { useFirebaseStore } from '../services/firebase.storage.service.ts';
 
 const StyledHeader = styled.header`
   background-color: ${colors.background};
@@ -39,8 +40,13 @@ const Birthday = () => {
 }
 const Name = () => {
   const {name, setName} = useAppStore();
+  const {authWithGoogle, user} = useFirebaseStore();
   const [editing, setEditing] = React.useState(false);
   const [newName, setNewName] = React.useState(name);
+  useEffect(() => {
+    if (!user) return;
+    setName(user.displayName);
+  }, [user]);
   return <>{
   editing 
   ? <input value={newName} onChange={e => setNewName(e.target.value)} onBlur={() => {setName(newName); setEditing(false)}} /> 
@@ -50,9 +56,11 @@ const Name = () => {
 }
 
 export const Header: React.FC = () => {
+  const {authWithGoogle, user} = useFirebaseStore();
   return (
     <StyledHeader>
     <Name />
+    {!user && <button onClick={authWithGoogle}>auth</button>}
     <Birthday />
     </StyledHeader>
   );
