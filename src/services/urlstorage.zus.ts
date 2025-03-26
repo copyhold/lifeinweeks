@@ -1,4 +1,5 @@
 import { StateStorage, createJSONStorage } from 'zustand/middleware'
+import {hydrateUrlToState} from '../utils/hydrateState';
 
 const formatDate = (date: Date): string => {
   const year = date.getFullYear();
@@ -14,18 +15,6 @@ const parseDate = (dateStr: string): Date => {
   return new Date(year, month, day);
 };
 
-const hydrate = (state: string) => {
-  let newValue = JSON.parse(state);
-  if (typeof newValue === 'string') newValue = JSON.parse(newValue);
-  newValue.state.birthday = parseDate(newValue.state.birthday);
-  newValue.state.events = newValue.state.events.map((event: any) => ({
-    ...event,
-    start: parseDate(event.start),
-    end: parseDate(event.end)
-  }));
-  return newValue;
-}
-
 export const persistentStorage: StateStorage = {
   getItem: (key): string | null => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -33,7 +22,7 @@ export const persistentStorage: StateStorage = {
     if (!storedValue) return null;
     try {
       const decodedValue = decodeURIComponent(storedValue);
-      const newValue = hydrate(decodedValue);
+      const newValue = hydrateUrlToState(decodedValue);
       return JSON.stringify(newValue);
     } catch (e) {
       console.error(e);

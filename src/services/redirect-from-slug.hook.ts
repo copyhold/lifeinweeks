@@ -1,9 +1,11 @@
 import {useState, useEffect} from 'react';
 import {useFirebaseStore} from './firebase.storage.service';
+import { useAppStore } from './state.zus';
+import {hydrateUrlToState} from '../utils/hydrateState';
 
 export const useRedirectFromSlug = () => {
   const {getLiveData} = useFirebaseStore();
-  const [live, setLive] = useState(null);
+  const {setName, setEvents, setBirthday} = useAppStore();
   useEffect(() => {
     const url = new URL(window.location.href);
     const slug = url.pathname.slice(1);
@@ -11,15 +13,14 @@ export const useRedirectFromSlug = () => {
     getLiveData(slug)
     .then(live => {
       if (live) {
-
-        console.log('%c [  ]-15', 'font-size:13px; background:pink; color:#bf2c9f;', JSON.parse(decodeURIComponent(live)));
-        setLive(live);
+        const {state: {name, birthday, events}} = hydrateUrlToState(decodeURIComponent(live))
+        setName(name);
+        setBirthday(birthday);
+        setEvents(events);
       }
     })
     .catch(e => {
       console.error(e);
     });
   }, []);
-
-  return {live};
 }

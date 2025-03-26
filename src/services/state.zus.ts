@@ -99,5 +99,4 @@ const stateCreatorFn = (set, get) => ({
   }
 });
 
-
 export const useAppStore = create<State>(persist<State>(stateCreatorFn, urlStorageOptions));

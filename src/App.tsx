@@ -19,22 +19,12 @@ const StyledApp = styled.main`
 `;
 function App() {
   const {tryToAuth} = useFirebaseStore();
-  const {live} = useRedirectFromSlug();
+  useRedirectFromSlug();
 
 
   useEffect(() => {
     tryToAuth();
   }, []);
-
-  useEffect(() => {
-    if (!live) {
-      return;
-    }
-    const url = new URL(window.location.href);
-    url.pathname = '/';
-    url.searchParams.set('life', decodeURIComponent(live));
-    window.history.replaceState({}, '', url);
-  }, [live]);
 
   return (
     <StyledApp>
