@@ -99,8 +99,5 @@ const stateCreatorFn = (set, get) => ({
   }
 });
 
-const getUrlSearch = () => {
-  return window.location.search.slice(1)
-}
 
 export const useAppStore = create<State>(persist<State>(stateCreatorFn, urlStorageOptions));

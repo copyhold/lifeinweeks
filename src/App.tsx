@@ -6,7 +6,6 @@ import { Header } from './components/Header';
 import { colors } from './theme';
 import { useFirebaseStore } from './services/firebase.storage.service';
 import { useRedirectFromSlug } from './services/redirect-from-slug.hook';
-import { useUrlSync } from './hooks/useUrlSync';
 
 const StyledApp = styled.main`
   display: flex;

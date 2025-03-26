@@ -45,8 +45,12 @@ export const useFirebaseStore = create<FirebaseStore>((set, get) => ({
   },
   tryToAuth: async () => {
     try {
-      const gcred = JSON.parse(localStorage.getItem('gcred'));
+      const gcredString = localStorage.getItem('gcred');
+      if (!gcredString) return;
+      
+      const gcred = JSON.parse(gcredString);
       if (!gcred) return;
+      
       const credential = GoogleAuthProvider.credential(gcred.idToken, gcred.accessToken);
       const result = await signInWithCredential(auth, credential);
       if (result) {
