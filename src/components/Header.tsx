@@ -18,6 +18,19 @@ const StyledHeader = styled.header`
   font-size: 1rem;
   }
 `
+const Space = styled.div`
+  flex-grow: 1;
+`;
+const SaveButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0;
+  cursor: pointer;
+  &::before {
+    content: '💾';
+  }
+}`;
 
 const Birthday = () => {
   const {birthday, setBirthday} = useAppStore();
@@ -64,7 +77,7 @@ const SaveLife = () => {
     if (!slug) return;
     await saveLife(life(), slug);
   }
-  return <button onClick={handleSaveLife}>Save</button>
+  return <SaveButton onClick={handleSaveLife} />;
 }
 
 export const Header: React.FC = () => {
@@ -72,6 +85,7 @@ export const Header: React.FC = () => {
   return (
     <StyledHeader>
     <Name />
+    <Space />
     {!user && <button onClick={authWithGoogle}>auth</button>}
     <Birthday />
     <SaveLife />
