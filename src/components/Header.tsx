@@ -17,7 +17,7 @@ const StyledHeader = styled.header`
   time {
   font-size: 1rem;
   }
-`
+`;
 const Space = styled.div`
   flex-grow: 1;
 `;
