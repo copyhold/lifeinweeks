@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { signInWithRedirect, getAuth, getRedirectResult, GoogleAuthProvider,signInWithPopup, signInWithCredential } from "firebase/auth";
-import { getFirestore, getDoc, doc } from "firebase/firestore";
+import { serverTimestamp, collection, getFirestore, getDoc, doc, setDoc } from "firebase/firestore";
 import {create} from 'zustand';
 
 const firebaseConfig = {
@@ -18,7 +18,6 @@ const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
 const db = getFirestore(app);
-
 type FirebaseStore = {
   app: any;
   user: any;
@@ -27,6 +26,7 @@ type FirebaseStore = {
   tryToAuth: () => Promise<void>;
   getLiveData: (slug: string) => Promise<string | undefined>;
   setUser: (user: any) => void;
+  saveLife: (life: any, slug: string) => Promise<void>;
 }
 export const useFirebaseStore = create<FirebaseStore>((set, get) => ({
   app,
@@ -65,8 +65,13 @@ export const useFirebaseStore = create<FirebaseStore>((set, get) => ({
     const docRef = doc(db, "lives", slug);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      const liveData = docSnap.get('live');
-      return liveData;
+      return docSnap.get('life');
     }
-  }
+  },
+  saveLife: async (life, slug) => {
+    const {uid} = auth.currentUser;
+    if (!slug || !uid) return;
+    const docRef = doc(collection(db, "lives"), slug);
+    await setDoc(docRef, { updatedAt: serverTimestamp(), life, slug, uid });
+  },
 }));

@@ -34,6 +34,14 @@ const stateCreatorFn = (set, get) => ({
   birthday: new Date('1972-08-07'),
   name: 'Ilya',
   events: [],
+  life: () => {
+    const {name, birthday, events} = get();
+    return {
+      name,
+      birthday,
+      events,
+    }
+  },
   setBirthday: (birthday: Date) => set({ birthday }),
   setName: (name: string) => set({ name }),
   setEvents: (events: TEvent[]) => set({ events }),

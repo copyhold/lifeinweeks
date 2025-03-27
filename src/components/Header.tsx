@@ -44,7 +44,7 @@ const Name = () => {
   const [editing, setEditing] = React.useState(false);
   const [newName, setNewName] = React.useState(name);
   useEffect(() => {
-    if (!user) return;
+    if (!user || name) return;
     setName(user.displayName);
   }, [user]);
   return <>{
@@ -55,6 +55,18 @@ const Name = () => {
   </>
 }
 
+const SaveLife = () => {
+  const {saveLife} = useFirebaseStore();
+  const {life} = useAppStore();
+  const handleSaveLife = async () => {
+    let slug = window.location.pathname.slice(1);
+    slug = prompt('Are you sure you want to save your life?', slug);
+    if (!slug) return;
+    await saveLife(life(), slug);
+  }
+  return <button onClick={handleSaveLife}>Save</button>
+}
+
 export const Header: React.FC = () => {
   const {authWithGoogle, user} = useFirebaseStore();
   return (
@@ -62,6 +74,7 @@ export const Header: React.FC = () => {
     <Name />
     {!user && <button onClick={authWithGoogle}>auth</button>}
     <Birthday />
+    <SaveLife />
     </StyledHeader>
   );
 }

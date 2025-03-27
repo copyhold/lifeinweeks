@@ -8,15 +8,22 @@ export const useRedirectFromSlug = () => {
   const {setName, setEvents, setBirthday} = useAppStore();
   useEffect(() => {
     const url = new URL(window.location.href);
+    const stateParam = url.searchParams.get('life');
     const slug = url.pathname.slice(1);
-    if (!slug) return;
+    if (!slug || stateParam) return;
     getLiveData(slug)
-    .then(live => {
-      if (live) {
-        const {state: {name, birthday, events}} = hydrateUrlToState(decodeURIComponent(live))
+    .then(life => {
+      if (life) {
+        const {name, birthday, events} = life;
         setName(name);
-        setBirthday(birthday);
-        setEvents(events);
+        setBirthday(birthday.toDate());
+        setEvents(events.map(event => {
+          return {
+            start: event.start.toDate(),
+            end: event.end.toDate(),
+            note: event.note
+          };
+        }))
       }
     })
     .catch(e => {

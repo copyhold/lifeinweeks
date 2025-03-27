@@ -21,8 +21,7 @@ export const persistentStorage: StateStorage = {
     const storedValue = searchParams.get(key);
     if (!storedValue) return null;
     try {
-      const decodedValue = decodeURIComponent(storedValue);
-      const newValue = hydrateUrlToState(decodedValue);
+      const newValue = hydrateUrlToState(storedValue);
       return JSON.stringify(newValue);
     } catch (e) {
       console.error(e);
