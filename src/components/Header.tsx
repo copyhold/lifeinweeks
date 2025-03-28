@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
-import styled, {css} from 'styled-components';
-import {useAppStore} from '../services/state.zus';
-import {colors} from '../theme';
-import { useFirebaseStore } from '../services/firebase.storage.service.ts';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useAppStore } from '../services/state.zus';
+import { colors } from '../theme';
+import { EventsList } from './EventsList';
+import { Menu } from './Menu';
 
 const StyledHeader = styled.header`
   background-color: ${colors.background};
@@ -14,81 +15,63 @@ const StyledHeader = styled.header`
   gap: 1em;
   justify-content: space-between;
   align-items: center;
-  time {
-  font-size: 1rem;
-  }
 `;
+
 const Space = styled.div`
   flex-grow: 1;
 `;
-const SaveButton = styled.button`
+
+const ListViewButton = styled.button`
   background: none;
   border: none;
   font-size: 1.5rem;
   padding: 0;
   cursor: pointer;
   &::before {
-    content: '💾';
+    content: '📋';
   }
-}`;
+`;
 
-const Birthday = () => {
-  const {birthday, setBirthday} = useAppStore();
-  const [editing, setEditing] = React.useState(false);
-  const formattedDate = new Intl.DateTimeFormat().format(new Date(birthday));
-  const inputValue = new Intl.DateTimeFormat('en-CA').format(new Date(birthday));
-  const handleUpdateBirthday = (e: React.BlurEvent<HTMLInputElement>) => {
-    if (!confirm('Are you sure you want to change your birthday?')) {
-      setEditing(false);
-    }
-    setBirthday(new Date(e.target.value));
-    setEditing(false);
-  }
-  return <>{
-  editing 
-  ? <input onBlur={handleUpdateBirthday} defaultValue={inputValue} type={'date'} /> 
-  : <time onClick={() => setEditing(true)}>{formattedDate}</time>
-  }
-  </>
-}
 const Name = () => {
-  const {name, setName} = useAppStore();
-  const {authWithGoogle, user} = useFirebaseStore();
-  const [editing, setEditing] = React.useState(false);
-  const [newName, setNewName] = React.useState(name);
-  useEffect(() => {
-    if (!user || name) return;
-    setName(user.displayName);
-  }, [user]);
-  return <>{
-  editing 
-  ? <input value={newName} onChange={e => setNewName(e.target.value)} onBlur={() => {setName(newName); setEditing(false)}} /> 
-  : <span onClick={() => setEditing(true)}>{name}</span>
-  }
-  </>
-}
+  const { name, setName } = useAppStore();
+  const [editing, setEditing] = useState(false);
+  const [newName, setNewName] = useState(name);
 
-const SaveLife = () => {
-  const {saveLife} = useFirebaseStore();
-  const {life} = useAppStore();
-  const handleSaveLife = async () => {
-    let slug = window.location.pathname.slice(1);
-    slug = prompt('Are you sure you want to save your life?', slug);
-    if (!slug) return;
-    await saveLife(life(), slug);
-  }
-  return <SaveButton onClick={handleSaveLife} />;
-}
+  return (
+    <>
+      {editing ? (
+        <input
+          value={newName}
+          onChange={e => setNewName(e.target.value)}
+          onBlur={() => {
+            setName(newName);
+            setEditing(false);
+          }}
+          autoFocus
+        />
+      ) : (
+        <span onClick={() => setEditing(true)}>{name}</span>
+      )}
+    </>
+  );
+};
 
 export const Header: React.FC = () => {
-  const {authWithGoogle, user} = useFirebaseStore();
+  const [showEventsList, setShowEventsList] = useState(false);
+  
+  const toggleEventsList = () => {
+    setShowEventsList(!showEventsList);
+  };
+
   return (
-    <StyledHeader>
-    <Name />
-    <Space />
-    {!user && <button onClick={authWithGoogle}>auth</button>}
-    <Birthday />
-    <SaveLife />
-    </StyledHeader>
+    <>
+      <StyledHeader>
+        <Name />
+        <Space />
+        <ListViewButton onClick={toggleEventsList} title="View Events List" />
+        <Menu />
+      </StyledHeader>
+      {showEventsList && <EventsList />}
+    </>
   );
-}
+};
