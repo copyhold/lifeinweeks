@@ -1,0 +1,9 @@
+{
+	"files": {
+		"include": ["src/**/*.js?", "src/**/*.ts?"]
+	},
+	"formatter": {
+		"indentStyle": "space",
+		"lineWidth": 120
+	}
+}
