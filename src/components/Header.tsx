@@ -58,7 +58,7 @@ const Name = () => {
 
 export const Header: React.FC = () => {
   const [showEventsList, setShowEventsList] = useState(false);
-  
+
   const toggleEventsList = () => {
     setShowEventsList(!showEventsList);
   };

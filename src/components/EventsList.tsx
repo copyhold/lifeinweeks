@@ -102,7 +102,7 @@ export const EventsList: React.FC = () => {
   const appStore = useAppStore();
   const events = appStore.events || [];
   const setEvents = appStore.setEvents;
-  
+
   const [sortedEvents, setSortedEvents] = useState<TEvent[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -113,11 +113,9 @@ export const EventsList: React.FC = () => {
       setSortedEvents([]);
       return;
     }
-    
+
     // Sort events by date (newest first)
-    const sorted = [...events].sort((a, b) => 
-      new Date(b.start).getTime() - new Date(a.start).getTime()
-    );
+    const sorted = [...events].sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime());
     setSortedEvents(sorted);
   }, [events]);
 
@@ -141,10 +139,8 @@ export const EventsList: React.FC = () => {
   const handleModalSubmit = (note: string, date: string) => {
     if (isEditing && currentEvent) {
       // Update existing event
-      const updatedEvents = events.map(e => 
-        e.id === currentEvent.id 
-          ? { ...e, note, start: new Date(date).toISOString() } 
-          : e
+      const updatedEvents = events.map(e =>
+        e.id === currentEvent.id ? { ...e, note, start: new Date(date).toISOString() } : e,
       );
       setEvents(updatedEvents);
     } else {
@@ -152,17 +148,17 @@ export const EventsList: React.FC = () => {
       const newEvent: TEvent = {
         id: Date.now().toString(),
         start: new Date(date).toISOString(),
-        note
+        note,
       };
       setEvents([...events, newEvent]);
     }
-    
+
     closeModal();
   };
 
   const handleDeleteEvent = (event: TEvent) => {
     if (!window.confirm('Are you sure you want to delete this event?')) return;
-    
+
     const updatedEvents = events.filter(e => e.id !== event.id);
     setEvents(updatedEvents);
   };
@@ -173,7 +169,7 @@ export const EventsList: React.FC = () => {
         <Title>Life Events</Title>
         <NewButton onClick={openAddModal} title="Add new event" />
       </EventsHeader>
-      
+
       {sortedEvents.length > 0 ? (
         <StyledEventsList>
           {sortedEvents.map(event => (
@@ -200,4 +196,4 @@ export const EventsList: React.FC = () => {
       />
     </EventsListContainer>
   );
-}; 
+};

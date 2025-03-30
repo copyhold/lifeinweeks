@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useAppStore, useEditWeekStore } from '../services/state.zus';
 
@@ -17,33 +17,35 @@ textarea {
   padding: 0.5em;
 }
 `;
-export const EditWeek: React.FC = ()=> {
-  const {setEvent} = useAppStore();
-  const {editWeek, setEditWeek} = useEditWeekStore();
+export const EditWeek: React.FC = () => {
+  const { setEvent } = useAppStore();
+  const { editWeek, setEditWeek } = useEditWeekStore();
   const [note, setNote] = React.useState('');
   const handleUpdate = () => {
-    const {start, end} = editWeek;
+    const { start, end } = editWeek;
     setEditWeek(null);
     if (!note) return;
-    setEvent({start, end, note});
-  }
+    setEvent({ start, end, note });
+  };
   useEffect(() => {
     const handleEscButton = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setEditWeek(null);
       }
-    }
-    document.body.addEventListener( 'keydown', handleEscButton );
-    return () => document.body.removeEventListener( 'keydown', handleEscButton )
+    };
+    document.body.addEventListener('keydown', handleEscButton);
+    return () => document.body.removeEventListener('keydown', handleEscButton);
   }, []);
   useEffect(() => {
     if (editWeek) {
       setNote(editWeek.events[0]?.note || '');
     }
-  }, [editWeek])
-  return (Boolean(editWeek) &&
-    <StyledEditWeek open>
-      <textarea autoFocus value={note} onChange={e => setNote(e.target.value)} onBlur={handleUpdate} />
-    </StyledEditWeek>
+  }, [editWeek]);
+  return (
+    Boolean(editWeek) && (
+      <StyledEditWeek open>
+        <textarea autoFocus value={note} onChange={e => setNote(e.target.value)} onBlur={handleUpdate} />
+      </StyledEditWeek>
+    )
   );
-}
+};

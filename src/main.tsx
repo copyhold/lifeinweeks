@@ -1,8 +1,8 @@
-import React, { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import React, { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import './utils/date';
-import App from './App.tsx'
-import {createGlobalStyle} from 'styled-components';
+import App from './App.tsx';
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
 html {
@@ -22,4 +22,4 @@ createRoot(document.getElementById('root')!).render(
     <GlobalStyles />
     <App />
   </StrictMode>,
-)
+);

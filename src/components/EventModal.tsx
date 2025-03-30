@@ -120,13 +120,7 @@ const formatDateForInput = (dateString: string) => {
   return date.toISOString().split('T')[0];
 };
 
-export const EventModal: React.FC<EventModalProps> = ({
-  isOpen,
-  isEditing,
-  currentEvent,
-  onClose,
-  onSubmit
-}) => {
+export const EventModal: React.FC<EventModalProps> = ({ isOpen, isEditing, currentEvent, onClose, onSubmit }) => {
   const noteRef = useRef<HTMLTextAreaElement>(null);
   const dateRef = useRef<HTMLInputElement>(null);
 
@@ -134,14 +128,14 @@ export const EventModal: React.FC<EventModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!noteRef.current || !dateRef.current) return;
-    
+
     const note = noteRef.current.value.trim();
     const date = dateRef.current.value;
-    
+
     if (!note || !date) return;
-    
+
     onSubmit(note, date);
   };
 
@@ -155,17 +149,19 @@ export const EventModal: React.FC<EventModalProps> = ({
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label htmlFor="event-date">Date</Label>
-            <Input 
+            <Input
               id="event-date"
               type="date"
               ref={dateRef}
-              defaultValue={currentEvent ? formatDateForInput(currentEvent.start) : formatDateForInput(new Date().toISOString())}
+              defaultValue={
+                currentEvent ? formatDateForInput(currentEvent.start) : formatDateForInput(new Date().toISOString())
+              }
               required
             />
           </FormGroup>
           <FormGroup>
             <Label htmlFor="event-note">Note</Label>
-            <TextArea 
+            <TextArea
               id="event-note"
               ref={noteRef}
               defaultValue={currentEvent?.note || ''}
@@ -174,11 +170,13 @@ export const EventModal: React.FC<EventModalProps> = ({
             />
           </FormGroup>
           <ButtonGroup>
-            <Button type="button" onClick={onClose}>Cancel</Button>
+            <Button type="button" onClick={onClose}>
+              Cancel
+            </Button>
             <SubmitButton type="submit">{isEditing ? 'Update' : 'Add'}</SubmitButton>
           </ButtonGroup>
         </Form>
       </ModalContent>
     </ModalOverlay>
   );
-}; 
+};

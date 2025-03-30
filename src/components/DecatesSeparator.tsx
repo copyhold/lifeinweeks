@@ -10,13 +10,13 @@ const StyledSection = styled.section`
   }
 `;
 
-export const DecatesSeparator: React.FC<{week: WeekOfTheYear}> = ({week}) => {
-  const {yearsSinceBirth} = useAppStore();
+export const DecatesSeparator: React.FC<{ week: WeekOfTheYear }> = ({ week }) => {
+  const { yearsSinceBirth } = useAppStore();
   const years = yearsSinceBirth(week.start);
   const title = years > 0 ? `${years} years passed` : 'Your first year';
   return (
-  <StyledSection>
-    <h3>{title}</h3>
-  </StyledSection>
-  )
-}
+    <StyledSection>
+      <h3>{title}</h3>
+    </StyledSection>
+  );
+};

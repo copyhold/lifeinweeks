@@ -1,8 +1,8 @@
-import React, {useCallback, useMemo} from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useStore } from 'zustand';
 import styled from 'styled-components';
-import {Week} from './Week';
-import {DecatesSeparator} from './DecatesSeparator';
+import { Week } from './Week';
+import { DecatesSeparator } from './DecatesSeparator';
 import { useAppStore, life_length } from '../services/state.zus';
 import { colors } from '../theme';
 
@@ -19,14 +19,12 @@ export const Weeks: React.FC = () => {
   const { allWeeks, getEventsForWeek, birthday, isFirstWeekOfDecade } = useAppStore();
   return (
     <StyledWeeks>
-      {allWeeks().map((week) => (
+      {allWeeks().map(week => (
         <React.Fragment key={week.start.getTime()}>
-        {
-          isFirstWeekOfDecade(week) && <DecatesSeparator week={week} />
-        }
-        <Week week={week} />
+          {isFirstWeekOfDecade(week) && <DecatesSeparator week={week} />}
+          <Week week={week} />
         </React.Fragment>
       ))}
     </StyledWeeks>
-  )
-}
+  );
+};

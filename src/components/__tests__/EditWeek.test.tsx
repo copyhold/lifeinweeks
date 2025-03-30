@@ -4,7 +4,7 @@ import { EditWeek } from '../EditWeek';
 import { useAppStore, useEditWeekStore } from '../../services/state.zus';
 import { create } from 'zustand';
 
-console.log('%c [  ]-7', 'font-size:13px; background:pink; color:#bf2c9f;', jest)
+console.log('%c [  ]-7', 'font-size:13px; background:pink; color:#bf2c9f;', jest);
 // Mock zustand stores
 jest.mock('../../services/state.zus', () => ({
   useAppStore: jest.fn(),
@@ -17,14 +17,14 @@ describe('EditWeek', () => {
   const mockWeek = {
     start: {
       format: jest.fn().mockReturnValue('2023/10/26'),
-      getTime: jest.fn().mockReturnValue(1698336000000)
+      getTime: jest.fn().mockReturnValue(1698336000000),
     },
     end: {
       format: jest.fn().mockReturnValue('2023/11/02'),
-      getTime: jest.fn().mockReturnValue(1699027200000)
+      getTime: jest.fn().mockReturnValue(1699027200000),
     },
-    events: []
-  }
+    events: [],
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -55,11 +55,9 @@ describe('EditWeek', () => {
 
   it('should render textarea with correct value', () => {
     const mockWeekWithEvent = {
-        ...mockWeek,
-        events: [{ note: 'Test Note' }]
-      }
-
-    (useEditWeekStore as jest.Mock).mockReturnValue({
+      ...mockWeek,
+      events: [{ note: 'Test Note' }],
+    }(useEditWeekStore as jest.Mock).mockReturnValue({
       editWeek: mockWeekWithEvent,
       setEditWeek: mockSetEditWeek,
     });
@@ -69,7 +67,7 @@ describe('EditWeek', () => {
     expect(textarea).toHaveValue('Test Note');
   });
   it('should update note state when textarea value changes', () => {
-        (useEditWeekStore as jest.Mock).mockReturnValue({
+    (useEditWeekStore as jest.Mock).mockReturnValue({
       editWeek: mockWeek,
       setEditWeek: mockSetEditWeek,
     });
@@ -79,7 +77,7 @@ describe('EditWeek', () => {
     expect(textarea).toHaveValue('New Note');
   });
   it('should call setEvent with correct data when textarea blurs', () => {
-     (useEditWeekStore as jest.Mock).mockReturnValue({
+    (useEditWeekStore as jest.Mock).mockReturnValue({
       editWeek: mockWeek,
       setEditWeek: mockSetEditWeek,
     });
@@ -96,7 +94,7 @@ describe('EditWeek', () => {
     });
   });
   it('should call setEditWeek(null) on escape key press', () => {
-     (useEditWeekStore as jest.Mock).mockReturnValue({
+    (useEditWeekStore as jest.Mock).mockReturnValue({
       editWeek: mockWeek,
       setEditWeek: mockSetEditWeek,
     });
@@ -105,7 +103,7 @@ describe('EditWeek', () => {
     expect(mockSetEditWeek).toHaveBeenCalledWith(null);
   });
   it('should not call setEvent when textarea blurs with empty value', () => {
-     (useEditWeekStore as jest.Mock).mockReturnValue({
+    (useEditWeekStore as jest.Mock).mockReturnValue({
       editWeek: mockWeek,
       setEditWeek: mockSetEditWeek,
     });
@@ -115,5 +113,5 @@ describe('EditWeek', () => {
     fireEvent.blur(textarea);
     expect(mockSetEditWeek).toHaveBeenCalledWith(null);
     expect(mockSetEvent).not.toHaveBeenCalled();
-  })
+  });
 });

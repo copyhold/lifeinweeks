@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Weeks } from './components/Weeks';
 import { EditWeek } from './components/EditWeek';
@@ -18,9 +18,8 @@ const StyledApp = styled.main`
   }
 `;
 function App() {
-  const {tryToAuth} = useFirebaseStore();
+  const { tryToAuth } = useFirebaseStore();
   useRedirectFromSlug();
-
 
   useEffect(() => {
     tryToAuth();
@@ -35,4 +34,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

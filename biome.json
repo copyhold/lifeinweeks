@@ -5,5 +5,11 @@
 	"formatter": {
 		"indentStyle": "space",
 		"lineWidth": 120
+	},
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "asNeeded",
+			"quoteStyle": "single"
+		}
 	}
 }

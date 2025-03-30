@@ -103,9 +103,9 @@ export const Menu: React.FC = () => {
   const handleUpdateBirthday = () => {
     const formattedDate = new Intl.DateTimeFormat('en-CA').format(new Date(birthday));
     const newDate = window.prompt('Enter your birthday:', formattedDate);
-    
+
     if (!newDate) return;
-    
+
     if (window.confirm('Are you sure you want to change your birthday?')) {
       setBirthday(new Date(newDate));
     }
@@ -114,9 +114,9 @@ export const Menu: React.FC = () => {
   const handleSaveLife = async () => {
     let slug = window.location.pathname.slice(1);
     slug = window.prompt('Enter a name for your life:', slug) || '';
-    
+
     if (!slug) return;
-    
+
     await saveLife(life(), slug);
     setIsOpen(false);
   };
@@ -134,14 +134,14 @@ export const Menu: React.FC = () => {
           <BirthdayButton />
           Change Birthday
         </MenuItem>
-        
+
         <MenuDivider />
-        
+
         <MenuItem onClick={handleSaveLife}>
           <SaveButton />
           Save Life
         </MenuItem>
-        
+
         {!user && (
           <>
             <MenuDivider />
@@ -151,16 +151,14 @@ export const Menu: React.FC = () => {
             </MenuItem>
           </>
         )}
-        
+
         {user && (
           <>
             <MenuDivider />
-            <MenuItem>
-              Signed in as {user.displayName}
-            </MenuItem>
+            <MenuItem>Signed in as {user.displayName}</MenuItem>
           </>
         )}
       </MenuDropdown>
     </MenuContainer>
   );
-}; 
+};
