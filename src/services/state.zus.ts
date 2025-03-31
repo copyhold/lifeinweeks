@@ -64,8 +64,8 @@ const stateCreatorFn = (set, get) => ({
     return events.filter((event: TEvent) => !(start <= new Date(event.start) && end > new Date(event.start)));
   },
   yearsSinceBirth: (date) => {
-    const birthday = get().birthday;
-    const years = Math.floor((date.getTime() - new Date(birthday).getTime()) / 1000 / 60 / 60 / 24 / 365.25);
+    const birthday = new Date(get().birthday);
+    const years = Math.floor((date.getTime() - birthday.getTime()) / 1000 / 60 / 60 / 24 / 365.25);
     return years;
   },
   isFirstWeekOfDecade: (week) => {

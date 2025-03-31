@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Weeks } from './components/Weeks';
 import { EditWeek } from './components/EditWeek';
 import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 import { colors } from './theme';
 import { useFirebaseStore } from './services/firebase.storage.service';
 import { useRedirectFromSlug } from './services/redirect-from-slug.hook';
@@ -23,13 +24,14 @@ function App() {
 
   useEffect(() => {
     tryToAuth();
-  }, []);
+  }, [tryToAuth]);
 
   return (
     <StyledApp>
       <EditWeek />
       <Header />
       <Weeks />
+      <Footer />
     </StyledApp>
   );
 }

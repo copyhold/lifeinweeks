@@ -8,7 +8,7 @@
     "build": "vite build --base=/",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "bun test"
   },
   "dependencies": {
     "@preact/signals-react": "^3.0.1",
