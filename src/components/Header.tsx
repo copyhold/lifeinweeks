@@ -15,6 +15,24 @@ const StyledHeader = styled.header`
   gap: 1em;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0px;
+  container-type: scroll-state;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    height: 30px;
+    background: linear-gradient(${colors.background}, transparent); 
+    width: 100%;
+    left: 0;
+    display: none;
+  }
+  &::after {
+    @container scroll-state(stuck: top) {
+    display: block;
+    }
+  }
 `;
 
 const Space = styled.div`

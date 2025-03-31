@@ -8,6 +8,8 @@ const FooterContainer = styled.footer`
   bottom: 10px;
   border-radius: 5px;
   overflow: clip;
+  box-shadow: 0 0 10px 5px #fff;
+  background: #fff;
   @media (max-width: 599px) {
     width: 100vw;
     margin-left: -5px;
@@ -20,7 +22,7 @@ const Minimap = styled.div<{percent: number}>`
 width: 100%;
 height: 100%;
 ${({ percent }) => `
-background: linear-gradient(to right, #ff7e5f ${percent}%, #feb47b ${percent}%);
+background: linear-gradient(to right, #2cff004f ${percent}%, #93f7b54f ${percent}%);
 `};
 }`;
 export const Footer: React.FC = () => {
