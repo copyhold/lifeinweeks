@@ -22,13 +22,13 @@ const StyledWeek = styled.label<{ $weekStatus: WeekStatus; $isEditing: boolean }
   ${props =>
     props.$weekStatus === 'future' &&
     css`
-    background-color: ${colors.empathize};
-    border-color: ${colors.empathize};
+    background-color: color(from var(--background-color) xyz calc(x - 0.1) calc(y - 0.1) calc(z - 0.1));
+    border-color: transparent;
   `}
   ${props =>
     props.$weekStatus === 'current' &&
     css`
-    background-color: light-dark(lightgreen, lightcoral);  
+    background-color: light-dark(lightgreen, #fff);  
   `}
   p {
   margin: 0;

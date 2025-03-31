@@ -2,9 +2,13 @@ import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './utils/date';
 import App from './App.tsx';
+import { colors } from './theme';
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
+:root {
+  --background-color: ${colors.background};
+}
 html {
   color-scheme: light dark;
   font-size: 16px;

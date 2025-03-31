@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import {useAppStore, life_length} from '../services/state.zus';
+import { colors } from '../theme';
 
 const FooterContainer = styled.footer`
   height: 20px;
@@ -8,7 +9,7 @@ const FooterContainer = styled.footer`
   bottom: 10px;
   border-radius: 5px;
   overflow: clip;
-  box-shadow: 0 0 10px 5px #fff;
+  box-shadow: 0 0 10px 5px ${colors.background};
   background: #fff;
   @media (max-width: 599px) {
     width: 100vw;
@@ -21,8 +22,10 @@ const FooterContainer = styled.footer`
 const Minimap = styled.div<{percent: number}>`
 width: 100%;
 height: 100%;
+--past-color: color(from var(--background-color) xyz calc(x - 0.1) calc(y - 0.1) calc(z - 0.1));
+--future-color: color(from var(--background-color) xyz calc(x + 0.1) calc(y + 0.1) calc(z + 0.1));
 ${({ percent }) => `
-background: linear-gradient(to right, #2cff004f ${percent}%, #93f7b54f ${percent}%);
+background: linear-gradient(to right, var(--past-color) ${percent}%, var(--future-color) ${percent}%);
 `};
 }`;
 export const Footer: React.FC = () => {
