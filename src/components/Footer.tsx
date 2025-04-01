@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
   const {birthday, yearsSinceBirth} = useAppStore();
 
   const scrollToLifePosition = (e: React.ClickEvent) => {
-    const scrollPosition = window.scrollMaxY * e.clientX / e.target.scrollWidth;
+    const scrollPosition = document.body.scrollHeight * e.clientX / e.target.scrollWidth;
     window.scrollTo({
       top: scrollPosition,
       behavior: 'smooth',
