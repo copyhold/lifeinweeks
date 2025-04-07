@@ -8,6 +8,10 @@ import { colors } from './theme';
 import { useFirebaseStore } from './services/firebase.storage.service';
 import { useRedirectFromSlug } from './services/redirect-from-slug.hook';
 import { useThemeSwitcher } from './hooks/useThemeSwitcher';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ShareAccept } from './components/ShareAccept';
+import { ShareLinkGenerator } from './components/ShareLinkGenerator';
+import { ShareManager } from './components/ShareManager';
 
 const StyledApp = styled.main`
   display: flex;
@@ -29,12 +33,19 @@ function App() {
   }, [tryToAuth]);
 
   return (
-    <StyledApp>
-      <EditWeek />
-      <Header />
-      <Weeks />
-      <Footer />
-    </StyledApp>
+    <BrowserRouter>
+      <StyledApp>
+        <EditWeek />
+        <Header />
+        <Routes>
+          <Route path="/" element={<Weeks />} />
+          <Route path="/share/:linkId" element={<ShareAccept />} />
+          <Route path="/share" element={<ShareLinkGenerator />} />
+          <Route path="/manage" element={<ShareManager />} />
+        </Routes>
+        <Footer />
+      </StyledApp>
+    </BrowserRouter>
   );
 }
 
