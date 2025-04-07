@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useAppStore } from '../services/state.zus';
-import { useFirebaseStore } from '../services/firebase.storage.service.ts';
+import { useFirebaseStore } from '../services/firebase.storage.service';
+import { useThemeSwitcher, ThemeMode } from '../hooks/useThemeSwitcher'; // Import the hook and type
 import { colors } from '../theme';
 
 const MenuContainer = styled.div`
@@ -35,13 +36,19 @@ const MenuDropdown = styled.div<{ isOpen: boolean }>`
   display: ${props => (props.isOpen ? 'block' : 'none')};
 `;
 
-const MenuItem = styled.div`
+const MenuItem = styled.div<{ $active?: boolean }>`
   padding: 0.5rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  
+
+  ${({ $active }) =>
+    $active &&
+    css`
+      font-weight: bold; /* Highlight active item */
+    `}
+
   &:hover {
     background-color: ${colors.border || '#eee'};
     border-radius: 0.25rem;
@@ -75,12 +82,25 @@ const BirthdayButton = styled.span`
   }
 `;
 
+const ThemeButton = styled.span<{ type: ThemeMode }>`
+  &::before {
+    content: '${({ type }) => (type === 'light' ? '☀️' : type === 'dark' ? '🌙' : '💻')}';
+    margin-right: 0.5rem;
+  }
+`;
+
 export const Menu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const { birthday, setBirthday, name } = useAppStore();
+  const { themeMode, setThemeMode } = useThemeSwitcher(); // Use the theme hook
+  const {
+    birthday,
+    setBirthday,
+    // themeMode and setThemeMode are no longer needed from here
+  } = useAppStore();
+
   const { authWithGoogle, user, saveLife } = useFirebaseStore();
-  const { life } = useAppStore();
+  const { life } = useAppStore(); // Get the life data generation function
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -106,24 +126,61 @@ export const Menu: React.FC = () => {
 
     if (!newDate) return;
 
-    if (window.confirm('Are you sure you want to change your birthday?')) {
-      setBirthday(new Date(newDate));
+    try {
+      // Attempt to parse the date to ensure it's valid before confirming
+      const parsedDate = new Date(newDate);
+      if (isNaN(parsedDate.getTime())) {
+        alert('Invalid date format. Please use YYYY-MM-DD.');
+        return;
+      }
+      if (window.confirm('Are you sure you want to change your birthday?')) {
+        setBirthday(parsedDate);
+        setIsOpen(false); // Close menu after action
+      }
+    } catch (e) {
+       alert('Invalid date format. Please use YYYY-MM-DD.');
     }
   };
 
   const handleSaveLife = async () => {
     let slug = window.location.pathname.slice(1);
-    slug = window.prompt('Enter a name for your life:', slug) || '';
+    // Provide a default if the current slug is empty
+    slug = window.prompt('Enter a name (slug) for your life:', slug || 'my-life') || '';
 
-    if (!slug) return;
+    if (!slug) return; // User cancelled or entered empty string
 
-    await saveLife(life(), slug);
-    setIsOpen(false);
+    // Basic slug validation (optional, adjust as needed)
+    if (!/^[a-z0-9-]+$/.test(slug)) {
+       alert('Invalid name. Please use only lowercase letters, numbers, and hyphens.');
+       return;
+    }
+
+    try {
+      await saveLife(life(), slug); // Pass the current life state object
+      alert(`Life saved successfully with name: ${slug}`);
+      // Optionally update the URL to reflect the saved slug if it's new
+      if (window.location.pathname !== `/${slug}`) {
+        window.history.pushState({}, '', `/${slug}`);
+      }
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error saving life:", error);
+      alert("Failed to save life. Please check the console for details.");
+    }
   };
 
   const handleAuth = () => {
-    authWithGoogle();
+    authWithGoogle().catch(error => {
+        console.error("Google Sign-In failed:", error);
+        alert("Sign-in failed. Please try again or check the console.");
+    });
     setIsOpen(false);
+  };
+
+  const handleSetTheme = (mode: ThemeMode) => {
+    setThemeMode(mode);
+    // Keep menu open to see the change immediately
+    // setIsOpen(false);
   };
 
   return (
@@ -137,17 +194,32 @@ export const Menu: React.FC = () => {
 
         <MenuDivider />
 
-        <MenuItem onClick={handleSaveLife}>
-          <SaveButton />
-          Save Life
+        {/* Theme Switcher Options */}
+        <MenuItem onClick={() => handleSetTheme('light')} $active={themeMode === 'light'}>
+          <ThemeButton type="light" /> Light Theme
+        </MenuItem>
+        <MenuItem onClick={() => handleSetTheme('dark')} $active={themeMode === 'dark'}>
+          <ThemeButton type="dark" /> Dark Theme
+        </MenuItem>
+        <MenuItem onClick={() => handleSetTheme('system')} $active={themeMode === 'system'}>
+          <ThemeButton type="system" /> System Default
         </MenuItem>
 
+        <MenuDivider />
+
+        {/* Save Life Option */}
+        <MenuItem onClick={handleSaveLife} title={user ? "Save your current life data under a unique name" : "Sign in to save your life data"}>
+          <SaveButton />
+          { user ? 'Save Life' : 'Save Life (Sign in required)'}
+        </MenuItem>
+
+        {/* Authentication Options */}
         {!user && (
           <>
             <MenuDivider />
             <MenuItem onClick={handleAuth}>
               <AuthButton />
-              Sign In
+              Sign In with Google
             </MenuItem>
           </>
         )}
@@ -155,7 +227,16 @@ export const Menu: React.FC = () => {
         {user && (
           <>
             <MenuDivider />
-            <MenuItem>Signed in as {user.displayName}</MenuItem>
+            {/* Display user info - Make it non-clickable or add sign-out option here */}
+            <MenuItem style={{ cursor: 'default' }}>
+              Signed in as {user.displayName || user.email}
+            </MenuItem>
+            {/* Optionally add a sign-out button here */}
+            {/*
+            <MenuItem onClick={handleSignOut}>
+               <span style={{ marginRight: '0.5rem' }}>🚪</span> Sign Out
+            </MenuItem>
+            */}
           </>
         )}
       </MenuDropdown>

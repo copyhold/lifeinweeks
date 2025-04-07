@@ -7,6 +7,7 @@ import { Footer } from './components/Footer';
 import { colors } from './theme';
 import { useFirebaseStore } from './services/firebase.storage.service';
 import { useRedirectFromSlug } from './services/redirect-from-slug.hook';
+import { useThemeSwitcher } from './hooks/useThemeSwitcher';
 
 const StyledApp = styled.main`
   display: flex;
@@ -19,6 +20,7 @@ const StyledApp = styled.main`
   }
 `;
 function App() {
+  useThemeSwitcher();
   const { tryToAuth } = useFirebaseStore();
   useRedirectFromSlug();
 
