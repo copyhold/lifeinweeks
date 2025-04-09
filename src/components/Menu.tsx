@@ -206,14 +206,6 @@ export const Menu: React.FC = () => {
 
         <MenuDivider />
 
-        {/* Share Link Option */}
-        <MenuItem as={Link} to="/share" onClick={() => setIsOpen(false)}>
-          <ShareButton />
-          Share
-        </MenuItem>
-
-        <MenuDivider />
-
         {/* Theme Switcher Options */}
         <MenuItem onClick={() => handleSetTheme('light')} $active={themeMode === 'light'}>
           <ThemeButton type="light" /> Light Theme
@@ -227,11 +219,6 @@ export const Menu: React.FC = () => {
 
         <MenuDivider />
 
-        {/* Save Life Option */}
-        <MenuItem onClick={handleSaveLife} title={user ? "Save your current life data under a unique name" : "Sign in to save your life data"}>
-          <SaveButton />
-          { user ? 'Save Life' : 'Save Life (Sign in required)'}
-        </MenuItem>
 
         {/* Authentication Options */}
         {!user && (
@@ -249,6 +236,14 @@ export const Menu: React.FC = () => {
             <MenuDivider />
             <MenuItem style={{ cursor: 'default' }}>
               Signed in as {user.displayName || user.email}
+            </MenuItem>
+            <MenuItem onClick={handleSaveLife} title={user ? "Save your current life data under a unique name" : "Sign in to save your life data"}>
+              <SaveButton />
+              { user ? 'Save Life' : 'Save Life (Sign in required)'}
+            </MenuItem>
+            <MenuItem as={Link} to="/share" onClick={() => setIsOpen(false)}>
+              <ShareButton />
+              Share
             </MenuItem>
           </>
         )}

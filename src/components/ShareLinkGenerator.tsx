@@ -12,11 +12,11 @@ export const ShareLinkGenerator = () => {
   const [link, setLink] = useState<string | null>(null);
   const [slug, setSlug] = useState<string>('');
 
-  const handleGenerateLink = async () => {
+  const handleGenerateLink = React.useCallback(async () => {
     if (!startWeek || !endWeek || !user) return;
     const linkId = await createSharingLink(startWeek, endWeek, slug);
     setLink(`${window.location.origin}/share/${linkId}`);
-  };
+  }, [startWeek, endWeek, user]);
 
   const weeks = allWeeks();
 
@@ -45,10 +45,6 @@ export const ShareLinkGenerator = () => {
           ))}
         </select>
       </div>
-      <div>
-        <label>Slug:</label>
-        <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} />
-      </div>
       <button onClick={handleGenerateLink}>Generate Link</button>
       {link && (
         <div>
@@ -58,7 +54,6 @@ export const ShareLinkGenerator = () => {
           </a>
         </div>
       )}
-      <button onClick={() => navigate('/')}>Back</button>
     </div>
   );
 };
