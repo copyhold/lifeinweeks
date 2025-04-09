@@ -42,7 +42,7 @@ function App() {
           <Route path="/share/:linkId" element={<ShareAccept />} />
           <Route path="/share" element={<ShareLinkGenerator />} />
           <Route path="/manage" element={<ShareManager />} />
-          <Route path="/:slug" element={<RedirectFromSlug />} /> {/* Add dynamic route */}
+          <Route path="/:slug" element={<RedirectFromSlug />} />
         </Routes>
         <Footer />
       </StyledApp>
