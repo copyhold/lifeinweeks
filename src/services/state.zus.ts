@@ -31,10 +31,10 @@ interface State {
   setEvent: (updatedWeek: TEvent) => void;
   allWeeks: () => TWeek[];
   cleanWeek: (week: TWeek) => void;
-  addSharedLifeRange: (range: TSharedLifeRange) => void; // New
-  removeSharedLifeRange: (linkId: string) => void; // New
-  getSharedLifeRanges: () => TSharedLifeRange[]; // New
-  isWeekInSharedRange: (week: TWeek) => boolean; // New
+  addSharedLifeRange: (range: TSharedLifeRange) => void;
+  removeSharedLifeRange: (linkId: string) => void;
+  getSharedLifeRanges: () => TSharedLifeRange[];
+  isWeekInSharedRange: (week: TWeek) => boolean; 
 }
 
 export const useEditWeekStore = create<{

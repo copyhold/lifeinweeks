@@ -5,6 +5,7 @@ import { Week } from './Week';
 import { DecatesSeparator } from './DecatesSeparator';
 import { useAppStore, life_length } from '../services/state.zus';
 import { colors } from '../theme';
+import { Minimap } from './Minimap';
 
 const StyledWeeks = styled.section`
   display: flex;
@@ -18,13 +19,16 @@ const StyledWeeks = styled.section`
 export const Weeks: React.FC = () => {
   const { allWeeks, getEventsForWeek, birthday, isFirstWeekOfDecade } = useAppStore();
   return (
-    <StyledWeeks>
-      {allWeeks().map(week => (
-        <React.Fragment key={week.start.getTime()}>
-          {isFirstWeekOfDecade(week) && <DecatesSeparator week={week} />}
-          <Week week={week} />
-        </React.Fragment>
-      ))}
-    </StyledWeeks>
+    <>
+      <Minimap />
+      <StyledWeeks>
+        {allWeeks().map(week => (
+          <React.Fragment key={week.start.getTime()}>
+            {isFirstWeekOfDecade(week) && <DecatesSeparator week={week} />}
+            <Week week={week} />
+          </React.Fragment>
+        ))}
+      </StyledWeeks>
+    </>
   );
 };
