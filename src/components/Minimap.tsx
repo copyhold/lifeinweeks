@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {createPortal} from 'react-dom';
 import styled from 'styled-components';
 import {useAppStore, life_length} from '../services/state.zus';
@@ -34,6 +34,7 @@ animation-timeline: scroll(root);
 
 export const Minimap = () => {
   const {birthday, yearsSinceBirth} = useAppStore();
+  const [footerReady , setFooterReady] = useState(false);
 
   const scrollToLifePosition = (e: React.ClickEvent) => {
     const scrollPosition = (document.body.scrollHeight - window.innerHeight * 1.12) * e.clientX / e.target.scrollWidth;
@@ -43,9 +44,14 @@ export const Minimap = () => {
     });
   }
 
+  useEffect(() => {
+    setTimeout(() => setFooterReady(true), 100);
+  });
+
   const percent = useMemo(() => {
     return Math.round(100 * yearsSinceBirth(new Date()) / life_length);
   }, [birthday]);
 
+  if (!footerReady) return null;
   return createPortal(<StyledMinimap percent={percent} onClick={scrollToLifePosition} />, document.getElementById('footer'));
 }
