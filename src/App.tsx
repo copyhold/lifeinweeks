@@ -6,12 +6,12 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { colors } from './theme';
 import { useFirebaseStore } from './services/firebase.storage.service';
-import { useRedirectFromSlug } from './services/redirect-from-slug.hook';
 import { useThemeSwitcher } from './hooks/useThemeSwitcher';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ShareAccept } from './components/ShareAccept';
 import { ShareLinkGenerator } from './components/ShareLinkGenerator';
 import { ShareManager } from './components/ShareManager';
+import RedirectFromSlug from './components/RedirectFromSlug'; // Import the new component
 
 const StyledApp = styled.main`
   display: flex;
@@ -23,10 +23,10 @@ const StyledApp = styled.main`
     padding: 5px;
   }
 `;
+
 function App() {
   useThemeSwitcher();
   const { tryToAuth } = useFirebaseStore();
-  useRedirectFromSlug();
 
   useEffect(() => {
     tryToAuth();
@@ -42,6 +42,7 @@ function App() {
           <Route path="/share/:linkId" element={<ShareAccept />} />
           <Route path="/share" element={<ShareLinkGenerator />} />
           <Route path="/manage" element={<ShareManager />} />
+          <Route path="/:slug" element={<RedirectFromSlug />} /> {/* Add dynamic route */}
         </Routes>
         <Footer />
       </StyledApp>

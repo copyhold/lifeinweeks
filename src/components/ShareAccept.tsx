@@ -42,8 +42,9 @@ export const ShareAccept = () => {
     <div>
       <h2>Accept Sharing Invitation</h2>
       <p>
-        You are invited to manage a life range from {linkData.startWeek.toDateString()} to{' '}
-        {linkData.endWeek.toDateString()}
+        You are invited to manage a life range <br />
+        from: {linkData.startWeek.toDate().toString()} <br />
+        to: {linkData.endWeek.toDate().toString()}.
       </p>
       <button onClick={handleAccept}>Accept</button>
       <button onClick={() => navigate('/')}>Decline</button>

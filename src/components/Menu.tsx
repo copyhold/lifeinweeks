@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
+import { Link } from 'react-router-dom';
 import { useAppStore } from '../services/state.zus';
 import { useFirebaseStore } from '../services/firebase.storage.service';
 import { useThemeSwitcher, ThemeMode } from '../hooks/useThemeSwitcher'; // Import the hook and type
@@ -21,7 +22,7 @@ const MenuButton = styled.button`
   }
 `;
 
-const MenuDropdown = styled.div<{ isOpen: boolean }>`
+const MenuDropdown = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   top: 100%;
   right: 0;
@@ -33,7 +34,7 @@ const MenuDropdown = styled.div<{ isOpen: boolean }>`
   width: calc(100vw - 60px);
   max-width: 500px;
   z-index: 100;
-  display: ${props => (props.isOpen ? 'block' : 'none')};
+  display: ${props => (props.$isOpen ? 'block' : 'none')};
 `;
 
 const MenuItem = styled.div<{ $active?: boolean }>`
@@ -42,6 +43,10 @@ const MenuItem = styled.div<{ $active?: boolean }>`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  box-sizing: border-box;
 
   ${({ $active }) =>
     $active &&
@@ -85,6 +90,13 @@ const BirthdayButton = styled.span`
 const ThemeButton = styled.span<{ type: ThemeMode }>`
   &::before {
     content: '${({ type }) => (type === 'light' ? '☀️' : type === 'dark' ? '🌙' : '💻')}';
+    margin-right: 0.5rem;
+  }
+`;
+
+const ShareButton = styled.span`
+  &::before {
+    content: '🔗';
     margin-right: 0.5rem;
   }
 `;
@@ -186,10 +198,18 @@ export const Menu: React.FC = () => {
   return (
     <MenuContainer ref={menuRef}>
       <MenuButton onClick={toggleMenu} title="Menu" />
-      <MenuDropdown isOpen={isOpen}>
+      <MenuDropdown $isOpen={isOpen}>
         <MenuItem onClick={handleUpdateBirthday}>
           <BirthdayButton />
           Change Birthday
+        </MenuItem>
+
+        <MenuDivider />
+
+        {/* Share Link Option */}
+        <MenuItem as={Link} to="/share" onClick={() => setIsOpen(false)}>
+          <ShareButton />
+          Share
         </MenuItem>
 
         <MenuDivider />
@@ -227,16 +247,9 @@ export const Menu: React.FC = () => {
         {user && (
           <>
             <MenuDivider />
-            {/* Display user info - Make it non-clickable or add sign-out option here */}
             <MenuItem style={{ cursor: 'default' }}>
               Signed in as {user.displayName || user.email}
             </MenuItem>
-            {/* Optionally add a sign-out button here */}
-            {/*
-            <MenuItem onClick={handleSignOut}>
-               <span style={{ marginRight: '0.5rem' }}>🚪</span> Sign Out
-            </MenuItem>
-            */}
           </>
         )}
       </MenuDropdown>
