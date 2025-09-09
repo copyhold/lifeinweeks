@@ -5,7 +5,7 @@ import {create} from 'zustand';
 import { TSharedLifeRange } from "./state.zus";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBJriy9nfz1tEK4br1DA6n0oCWM7vUQvdA",
+  apiKey: "AIzaSyDAJBvpnD3tATIBNzwMWYu1RiZyRickZ1o",
   authDomain: "lifeinweeks-c7617.firebaseapp.com",
   projectId: "lifeinweeks-c7617",
   storageBucket: "lifeinweeks-c7617.firebasestorage.app",
