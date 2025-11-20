@@ -18,7 +18,7 @@ export const ShareManager = () => {
         addSharedLifeRange(range);
       });
     };
-    fetchData();
+    // fetchData();
   }, [getSharedLifeRanges, user, addSharedLifeRange]);
 
   const handleRevoke = async (linkId: string, slug: string) => {
